@@ -37,7 +37,7 @@ angular-webtransport-proto-workspace/   ← git-репо (корень)
 
 | Тема / запрос | Где искать |
 |---|---|
-| Структура workspace, общие правила workspace | **этот файл, §0–§2, §6–§8** |
+| Структура workspace, общие правила workspace | **этот файл, §0–§2, §5–§7** |
 | Protobuf-контракты, синтаксис `.proto`, `buf lint`, версии, changelog | [proto/AGENTS.md](proto/AGENTS.md) |
 | Протокольные соглашения (фрейминг, datagram-потоки, handshake-auth, версия протока) | [proto/AGENTS.md](proto/AGENTS.md) + сам [proto/PROTOCOL.md](proto/PROTOCOL.md) |
 | Angular-приложение (frontend), Taiga UI v5, Signal Forms, компоненты, роутинг, UI | [web/AGENTS.md](web/AGENTS.md) |
@@ -46,7 +46,7 @@ angular-webtransport-proto-workspace/   ← git-репо (корень)
 | WebTransport-edge (quic-go / Caddy с ALPN h3), решение по серверной стороне | [server/AGENTS.md](server/AGENTS.md) + [proto/PROTOCOL.md](proto/PROTOCOL.md) |
 | TLS/сертификаты, `make-certs.mjs`, CA/leaf, SAN, импорт CA в Windows | [certs/AGENTS.md](certs/AGENTS.md) |
 | Protobuf codegen (`buf generate`, `@bufbuild/protobuf`, `protoc-gen-es`) | [web/AGENTS.md](web/AGENTS.md) **и** [server/AGENTS.md](server/AGENTS.md) (каждый — свой `buf.gen.yaml` → свой `src/proto-generated/`) — плюс [proto/AGENTS.md](proto/AGENTS.md) для контрактов |
-| Стек, окружение хоста (Windows/bash/node/buf/openssl/Яндекс Browser/T:), корпуса документации, общие Guardrails | **этот файл, §2, §6, §7, §8** |
+| Стек, окружение хоста (Windows/bash/node/buf/openssl/Яндекс Browser/T:), корпуса документации, общие Guardrails | **этот файл, §2, §5, §7** |
 
 ### Правила workspace
 
@@ -91,7 +91,7 @@ WebTransport — это **транспорт**: поточный / bidirectional
 
 | Тип обмена | Транспорт | Реализация |
 |---|---|---|
-| **События** (push от сервера, не expecting response) | WebTransport | датаграммы (ненадёжные) или stream (надёжные) — по смыслу события |
+| **События** (push от сервера, без ожидания response) | WebTransport | датаграммы (ненадёжные) или stream (надёжные) — по смыслу события |
 | **Акции без ожидания ответа** (fire-and-forget) | WebTransport | датаграммы (ненадёжные) — «потеряло = ок»; если надёжность нужна — stream |
 | **Запрос-ответ** (аналог GET/POST; ждём response) | WebTransport | **надёжный bidirectional stream**: клиент пишет request → ждёт response в том же потоке; сервер обрабатывает → отвечает в том же потоке → закрывает |
 
@@ -100,8 +100,8 @@ WebTransport — это **транспорт**: поточный / bidirectional
 
 **Нетокен = редирект на логин.** Если клиент не имеет валидного токена:
 1. Запомнить текущий URL (запрос, на который был ответ 401/403, или текущая маршрутная
-   строка) — в `sessionStorage` (или `localStorage`, по выбору реализатора, но **один**
-   источник).
+   строка) — в **`sessionStorage`** (не `localStorage`, не переживает закрытие вкладки).
+   Источник — один, правило реализации — в [web/AGENTS.md](web/AGENTS.md) «Токен и редирект».
 2. Перенаправить на страницу логина/авторизации (HTTP-форма).
 3. После успешной авторизации — **вернуться** на запомненный URL.
 
@@ -205,7 +205,6 @@ WebTransport — это **транспорт**: поточный / bidirectional
 - ❌ Не размазывать транспортные детали по компонентам/фичам — только через SEAM
   (адаптер = единственный носитель детали). Правила SEAM — в [web/AGENTS.md](web/AGENTS.md) /
   [server/AGENTS.md](server/AGENTS.md).
-- ❌ Не писать в stream без учёта backpressure. Не дублировать reconnect в нескольких местах.
 - ❌ Не поднимать WebTransport-сервер на чистом Node (нет QUIC) — см. [server/AGENTS.md](server/AGENTS.md).
 - ❌ Не брать `chrome.exe`/`msedge.exe` для верификации; **Яндекс Browser** первичен.
 - ❌ Scratch — не в `%TEMP%`/`/tmp`; **`T:`**.
@@ -232,7 +231,7 @@ WebTransport — это **транспорт**: поточный / bidirectional
 
 > **Единый источник для общих dev-правил — этот раздел.** Подрепо не повторяют его,
 > а ссылаются (`корневой §7`) и содержат только то, что специфично именно для них.
-> Это устраняет дублирование между `web/AGENTS.md` и `server/AGENTS.md`.
+> Это устраняет дублирование между [web/AGENTS.md](web/AGENTS.md) и [server/AGENTS.md](server/AGENTS.md).
 
 ### Стиль TypeScript (оба кода)
 - **strict** — включён; конкретные strict-флаги — в `tsconfig.json` каждого подрепо.
