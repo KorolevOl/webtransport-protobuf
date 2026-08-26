@@ -173,3 +173,41 @@ WebTransport — это **транспорт**: поточный / bidirectional
 > Per-репо Definition of Done — в каждом подрепо:
 > [proto/AGENTS.md](proto/AGENTS.md) · [web/AGENTS.md](web/AGENTS.md) · [server/AGENTS.md](server/AGENTS.md) · [certs/AGENTS.md](certs/AGENTS.md)
 > (раздел «Definition of Done»).
+
+## 7. Общие правила разработки (применяются к `web/` и `server/`)
+
+> **Единый источник для общих dev-правил — этот раздел.** Подрепо не повторяют его,
+> а ссылаются (`корневой §7`) и содержат только то, что специфично именно для них.
+> Это устраняет дублирование между `web/AGENTS.md` и `server/AGENTS.md`.
+
+### Стиль TypeScript (оба кода)
+- **strict** — включён; конкретные strict-флаги — в `tsconfig.json` каждого подрепо.
+- **`no` `any`** — при неопределённости: `unknown` + narrowing, а не `any`.
+- Имена файлов — **дефисы** (кебаб-кейс): `user-profile.component.ts`, `message-router.ts`.
+- **БЕЗ** `helpers.ts` / `utils.ts` / `common.ts` — одна концепция = один модуль.
+
+### Protobuf codegen (оба кода) — канон
+- Runtime: **`@bufbuild/protobuf`** (protobuf-es). **Запрещены** `ts-proto`, `protobufjs`,
+  `@protobuf-ts/runtime` (см. §2, §5).
+- `buf.gen.yaml` (v2, **один и тот же** для обоих):
+  ```yaml
+  version: v2
+  plugins:
+    - local: protoc-gen-es
+      out: src/proto-generated
+      opt:
+        - target=ts
+        - import_extension=none
+        # - json_types=true   # если нужен JSON-mapping
+  ```
+- Скрипт в `package.json` (оба):
+  `proto:gen` = `node scripts/clean-proto.js && buf generate ../proto && node scripts/generate-proto-index.js`
+- Зависимости: runtime `@bufbuild/protobuf`; dev `@bufbuild/buf`, `@bufbuild/protoc-gen-es`.
+- `src/proto-generated/` — **вывод кодогена, никогда не редактировать** (чинить через `.proto`).
+
+### Логирование (оба кода)
+- **ОДИН logger-фасад**; все логи — только через него.
+- Лог **обязателен** на: вход/выход функций, ветвления решений, внеш. операции (сеть/диск/
+  subprocess), обработку ошибок, переходы состояний.
+- Конкретная библиотека — за подрепо (`web/`: candidate `@taiga-ui/kit-logging` или свой слой;
+  `server/`: candidate `pino`).
