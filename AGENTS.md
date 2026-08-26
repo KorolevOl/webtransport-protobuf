@@ -5,6 +5,18 @@
 > иной теме. Когда работаешь в конкретном подрепо — **читай и его `AGENTS.md`**.
 > Общие (workspace-уровневые) правила живут здесь.
 
+## 🚪 Быстрый навигатор по AGENTS.md подрепо
+
+| Подрепо | AGENTS.md подрепо | О чём |
+|---|---|---|
+| `proto/` | [proto/AGENTS.md](proto/AGENTS.md) | Protobuf-контракты, `buf.yaml`, стиль `.proto`, `PROTOCOL.md`, версии |
+| `web/`  | [web/AGENTS.md](web/AGENTS.md)  | Angular 22, Taiga UI, SEAM, WebTransport-клиент, codegen, верификация |
+| `server/` | [server/AGENTS.md](server/AGENTS.md) | Node 24 + TS strict, SEAM, WebTransport-edge (quic-go/Caddy), ESM |
+| `certs/` | [certs/AGENTS.md](certs/AGENTS.md) | Dev TLS: dev-CA + leaf (SAN localhost/127.0.0.1), `make-certs.mjs`, импорт CA |
+
+> Каждый подрепо-`AGENTS.md` **самостоятелен**: он ссылается на этот (`../AGENTS.md`)
+> для общих workspace-правил и содержит только специфику именно своего подрепо.
+
 ## 0. Структура workspace и роутинг по AGENTS.md
 
 ```
@@ -26,14 +38,14 @@ angular-webtransport-proto-workspace/   ← git-репо (корень)
 | Тема / запрос | Где искать |
 |---|---|
 | Структура workspace, общие правила workspace | **этот файл, §0–§2, §6–§8** |
-| Протobuf-контракты, синтаксис `.proto`, `buf lint`, версии, changelog | `proto/AGENTS.md` |
-| Протокольные соглашения (фрейминг, datagram-потоки, handshake-auth, версия протока) | `proto/AGENTS.md` + сам `proto/PROTOCOL.md` |
-| Angular-приложение (frontend), Taiga UI v5, Signal Forms, компоненты, роутинг, UI | `web/AGENTS.md` |
-| WebTransport-клиент (адаптер, backpressure, reconnect, SEAM на фронте) | `web/AGENTS.md` |
-| Node-бэкенд (ESM, SEAM, бизнес-логика, transport-адаптер на бэке) | `server/AGENTS.md` |
-| WebTransport-edge (quic-go / Caddy с ALPN h3), решение по серверной стороне | `server/AGENTS.md` + `proto/PROTOCOL.md` |
-| TLS/сертификаты, `make-certs.mjs`, CA/leaf, SAN, импорт CA в Windows | `certs/AGENTS.md` |
-| Протobuf codegen (`buf generate`, `@bufbuild/protobuf`, `protoc-gen-es`) | `web/AGENTS.md` **и** `server/AGENTS.md` (каждый — свой `buf.gen.yaml` → свой `src/proto-generated/`) — плюс `proto/AGENTS.md` для контрактов |
+| Протobuf-контракты, синтаксис `.proto`, `buf lint`, версии, changelog | [proto/AGENTS.md](proto/AGENTS.md) |
+| Протокольные соглашения (фрейминг, datagram-потоки, handshake-auth, версия протока) | [proto/AGENTS.md](proto/AGENTS.md) + сам [proto/PROTOCOL.md](proto/PROTOCOL.md) |
+| Angular-приложение (frontend), Taiga UI v5, Signal Forms, компоненты, роутинг, UI | [web/AGENTS.md](web/AGENTS.md) |
+| WebTransport-клиент (адаптер, backpressure, reconnect, SEAM на фронте) | [web/AGENTS.md](web/AGENTS.md) |
+| Node-бэкенд (ESM, SEAM, бизнес-логика, transport-адаптер на бэке) | [server/AGENTS.md](server/AGENTS.md) |
+| WebTransport-edge (quic-go / Caddy с ALPN h3), решение по серверной стороне | [server/AGENTS.md](server/AGENTS.md) + [proto/PROTOCOL.md](proto/PROTOCOL.md) |
+| TLS/сертификаты, `make-certs.mjs`, CA/leaf, SAN, импорт CA в Windows | [certs/AGENTS.md](certs/AGENTS.md) |
+| Протobuf codegen (`buf generate`, `@bufbuild/protobuf`, `protoc-gen-es`) | [web/AGENTS.md](web/AGENTS.md) **и** [server/AGENTS.md](server/AGENTS.md) (каждый — свой `buf.gen.yaml` → свой `src/proto-generated/`) — плюс [proto/AGENTS.md](proto/AGENTS.md) для контрактов |
 | Стек, окружение хоста (Windows/bash/node/buf/openssl/Яндекс Browser/T:), корпуса документации, общие Guardrails | **этот файл, §2, §6, §7, §8** |
 
 ### Правила workspace
@@ -77,7 +89,7 @@ WebTransport — это **транспорт**: поточный / bidirectional
 | Состояние | **signals** | `signal()`, `computed()`, `effect()` |
 | UI-кит | **Taiga UI v5** (`taiga-ui` + `@taiga-ui/cdk`) | secondary entry points, `@maskito/core`, CSS custom properties, **БЕЗ** `@angular/animations` |
 | TS (оба кода) | **strict** | **`no` `any`**; при неопределённости — `unknown` + сужение |
-| Сеть | **WebTransport** | браузер: Chromium API; сервер — см. `server/AGENTS.md` |
+| Сеть | **WebTransport** | браузер: Chromium API; сервер — см. [server/AGENTS.md](server/AGENTS.md) |
 | Protobuf runtime | **`@bufbuild/protobuf`** (protobuf-es) | единый runtime и в браузере, и в Node |
 | Protobuf codegen | **Buf v2 + `protoc-gen-es`** (`target=ts`) | **КАНОН**. НЕ `ts-proto`, НЕ `protobufjs` |
 | Бэкенд | **Node.js 24 + TypeScript** | ESM (`"type": "module"`), те же TS-правила что у фронте, адаптированные под Node |
@@ -99,7 +111,7 @@ WebTransport — это **транспорт**: поточный / bidirectional
 - **openssl** — из Git for Windows (git-bash, `/usr/bin/openssl`). Системный
   Windows-OpenSSL НЕ предполагать.
 - **Node v24 НЕ имеет нативного QUIC** (`node:quic` не грузится) — ограничение для
-  серверной стороны WebTransport (решение — в `server/AGENTS.md`).
+  серверной стороны WebTransport (решение — в [server/AGENTS.md](server/AGENTS.md)).
 - **Браузер для верификации**: **Яндекс Browser** (= Chromium) — **ПЕРВОЙ ОЧЕРЕДЬЮ**,
   не `chrome.exe`/`msedge.exe`. CDP `127.0.0.1:9222`, skill `browser-debug`,
   debug-профиль `browser-harness-profile`. Не `taskkill browser.exe` без фильтра.
@@ -137,9 +149,10 @@ WebTransport — это **транспорт**: поточный / bidirectional
 - ❌ Не писать `any`. В Angular — не писать `standalone: true`/`OnPush` явно. Не тащить
   `@angular/animations`.
 - ❌ Не размазывать транспортные детали по компонентам/фичам — только через SEAM
-  (адаптер = единственный носитель детали). Правила SEAM — в `web/AGENTS.md` / `server/AGENTS.md`.
+  (адаптер = единственный носитель детали). Правила SEAM — в [web/AGENTS.md](web/AGENTS.md) /
+  [server/AGENTS.md](server/AGENTS.md).
 - ❌ Не писать в stream без учёта backpressure. Не дублировать reconnect в нескольких местах.
-- ❌ Не поднимать WebTransport-сервер на чистом Node (нет QUIC) — см. `server/AGENTS.md`.
+- ❌ Не поднимать WebTransport-сервер на чистом Node (нет QUIC) — см. [server/AGENTS.md](server/AGENTS.md).
 - ❌ Не брать `chrome.exe`/`msedge.exe` для верификации; **Яндекс Browser** первичен.
 - ❌ Scratch — не в `%TEMP%`/`/tmp`; **`T:`**.
 - ❌ Dev-сертификаты (`certs/`) — не для прода, не под реальные домены, наружу не выставлять.
@@ -157,4 +170,6 @@ WebTransport — это **транспорт**: поточный / bidirectional
   симметрично в обоих адаптерах.
 - [ ] Решения по стек/пайплайн/транспорт записаны в Mnemosyne (compact fact), не только в чате.
 
-> Per-репо Definition of Done — в каждом `AGENTS.md` подрепо (§ «Definition of Done»).
+> Per-репо Definition of Done — в каждом подрепо:
+> [proto/AGENTS.md](proto/AGENTS.md) · [web/AGENTS.md](web/AGENTS.md) · [server/AGENTS.md](server/AGENTS.md) · [certs/AGENTS.md](certs/AGENTS.md)
+> (раздел «Definition of Done»).
