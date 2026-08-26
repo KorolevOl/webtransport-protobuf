@@ -38,14 +38,14 @@ angular-webtransport-proto-workspace/   ← git-репо (корень)
 | Тема / запрос | Где искать |
 |---|---|
 | Структура workspace, общие правила workspace | **этот файл, §0–§2, §6–§8** |
-| Протobuf-контракты, синтаксис `.proto`, `buf lint`, версии, changelog | [proto/AGENTS.md](proto/AGENTS.md) |
+| Protobuf-контракты, синтаксис `.proto`, `buf lint`, версии, changelog | [proto/AGENTS.md](proto/AGENTS.md) |
 | Протокольные соглашения (фрейминг, datagram-потоки, handshake-auth, версия протока) | [proto/AGENTS.md](proto/AGENTS.md) + сам [proto/PROTOCOL.md](proto/PROTOCOL.md) |
 | Angular-приложение (frontend), Taiga UI v5, Signal Forms, компоненты, роутинг, UI | [web/AGENTS.md](web/AGENTS.md) |
 | WebTransport-клиент (адаптер, backpressure, reconnect, SEAM на фронте) | [web/AGENTS.md](web/AGENTS.md) |
 | Node-бэкенд (ESM, SEAM, бизнес-логика, transport-адаптер на бэке) | [server/AGENTS.md](server/AGENTS.md) |
 | WebTransport-edge (quic-go / Caddy с ALPN h3), решение по серверной стороне | [server/AGENTS.md](server/AGENTS.md) + [proto/PROTOCOL.md](proto/PROTOCOL.md) |
 | TLS/сертификаты, `make-certs.mjs`, CA/leaf, SAN, импорт CA в Windows | [certs/AGENTS.md](certs/AGENTS.md) |
-| Протobuf codegen (`buf generate`, `@bufbuild/protobuf`, `protoc-gen-es`) | [web/AGENTS.md](web/AGENTS.md) **и** [server/AGENTS.md](server/AGENTS.md) (каждый — свой `buf.gen.yaml` → свой `src/proto-generated/`) — плюс [proto/AGENTS.md](proto/AGENTS.md) для контрактов |
+| Protobuf codegen (`buf generate`, `@bufbuild/protobuf`, `protoc-gen-es`) | [web/AGENTS.md](web/AGENTS.md) **и** [server/AGENTS.md](server/AGENTS.md) (каждый — свой `buf.gen.yaml` → свой `src/proto-generated/`) — плюс [proto/AGENTS.md](proto/AGENTS.md) для контрактов |
 | Стек, окружение хоста (Windows/bash/node/buf/openssl/Яндекс Browser/T:), корпуса документации, общие Guardrails | **этот файл, §2, §6, §7, §8** |
 
 ### Правила workspace
