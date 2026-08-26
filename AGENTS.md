@@ -37,7 +37,7 @@ angular-webtransport-proto-workspace/   ← git-репо (корень)
 
 | Тема / запрос | Где искать |
 |---|---|
-| Структура workspace, общие правила workspace | **этот файл, §0–§2, §5–§7** |
+| Структура workspace, общие правила workspace | **этот файл, §0–§7** |
 | Protobuf-контракты, синтаксис `.proto`, `buf lint`, версии, changelog | [proto/AGENTS.md](proto/AGENTS.md) |
 | Протокольные соглашения (фрейминг, datagram-потоки, handshake-auth, версия протока) | [proto/AGENTS.md](proto/AGENTS.md) + сам [proto/PROTOCOL.md](proto/PROTOCOL.md) |
 | Angular-приложение (frontend), Taiga UI v5, Signal Forms, компоненты, роутинг, UI | [web/AGENTS.md](web/AGENTS.md) |
@@ -46,7 +46,7 @@ angular-webtransport-proto-workspace/   ← git-репо (корень)
 | WebTransport-edge (quic-go / Caddy с ALPN h3), решение по серверной стороне | [server/AGENTS.md](server/AGENTS.md) + [proto/PROTOCOL.md](proto/PROTOCOL.md) |
 | TLS/сертификаты, `make-certs.mjs`, CA/leaf, SAN, импорт CA в Windows | [certs/AGENTS.md](certs/AGENTS.md) |
 | Protobuf codegen (`buf generate`, `@bufbuild/protobuf`, `protoc-gen-es`) | [web/AGENTS.md](web/AGENTS.md) **и** [server/AGENTS.md](server/AGENTS.md) (каждый — свой `buf.gen.yaml` → свой `src/proto-generated/`) — плюс [proto/AGENTS.md](proto/AGENTS.md) для контрактов |
-| Стек, окружение хоста (Windows/bash/node/buf/openssl/Яндекс Browser/T:), корпуса документации, общие Guardrails | **этот файл, §2, §5, §7** |
+| Стек (§2), окружение хоста (§3), корпуса документации (§4), общие Guardrails (§5), DoD (§6), dev-правила (§7) | **этот файл, §2–§7** |
 
 ### Правила workspace
 
@@ -242,7 +242,7 @@ WebTransport — это **транспорт**: поточный / bidirectional
 ### Protobuf codegen (оба кода) — канон
 - Runtime: **`@bufbuild/protobuf`** (protobuf-es). **Запрещены** `ts-proto`, `protobufjs`,
   `@protobuf-ts/runtime` (см. §2, §5).
-- `buf.gen.yaml` (v2, **один и тот же** для обоих):
+- `buf.gen.yaml` (v2, **содержимое одинаковое** в обоих, но у каждого репо **свой физический файл**):
   ```yaml
   version: v2
   plugins:
