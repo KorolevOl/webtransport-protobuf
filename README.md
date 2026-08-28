@@ -5,11 +5,11 @@
 
 | Path    | Репо (github.com/KorolevOl)                      |
 |---------|--------------------------------------------------|
-| proto/  | webtransport-protobuf-proto                      |
-| web/    | webtransport-protobuf-angular-web                |
-| server/ | webtransport-protobuf-nodejs-server              |
-| certs/  | webtransport-protobuf-certs                      |
-| edge/   | webtransport-protobuf-go-edge                    |
+| webtransport-protobuf-proto/  | webtransport-protobuf-proto                      |
+| webtransport-protobuf-angular-web/    | webtransport-protobuf-angular-web                |
+| webtransport-protobuf-nodejs-server/ | webtransport-protobuf-nodejs-server              |
+| webtransport-protobuf-certs/  | webtransport-protobuf-certs                      |
+| webtransport-protobuf-go-edge/   | webtransport-protobuf-go-edge                    |
 
 ## Как использовать
 

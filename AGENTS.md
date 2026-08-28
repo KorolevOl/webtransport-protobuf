@@ -9,10 +9,10 @@
 
 | Подрепо | AGENTS.md подрепо | О чём |
 |---|---|---|
-| `proto/` | [proto/AGENTS.md](proto/AGENTS.md) | Protobuf-контракты, `buf.yaml`, стиль `.proto`, `PROTOCOL.md`, версии |
-| `web/`  | [web/AGENTS.md](web/AGENTS.md)  | Angular 22, Taiga UI, SEAM, WebTransport-клиент, codegen, верификация |
-| `server/` | [server/AGENTS.md](server/AGENTS.md) | Node 24 + TS strict, SEAM, WebTransport-edge (quic-go/Caddy), ESM |
-| `certs/` | [certs/AGENTS.md](certs/AGENTS.md) | Dev TLS: dev-CA + leaf (SAN localhost/127.0.0.1), `make-certs.mjs`, импорт CA |
+| `webtransport-protobuf-proto/` | [webtransport-protobuf-proto/AGENTS.md](webtransport-protobuf-proto/AGENTS.md) | Protobuf-контракты, `buf.yaml`, стиль `.proto`, `PROTOCOL.md`, версии |
+| `webtransport-protobuf-angular-web/`  | [webtransport-protobuf-angular-web/AGENTS.md](webtransport-protobuf-angular-web/AGENTS.md)  | Angular 22, Taiga UI, SEAM, WebTransport-клиент, codegen, верификация |
+| `webtransport-protobuf-nodejs-server/` | [webtransport-protobuf-nodejs-server/AGENTS.md](webtransport-protobuf-nodejs-server/AGENTS.md) | Node 24 + TS strict, SEAM, WebTransport-edge (quic-go/Caddy), ESM |
+| `webtransport-protobuf-certs/` | [webtransport-protobuf-certs/AGENTS.md](webtransport-protobuf-certs/AGENTS.md) | Dev TLS: dev-CA + leaf (SAN localhost/127.0.0.1), `make-certs.mjs`, импорт CA |
 
 > Каждый подрепо-`AGENTS.md` **самостоятелен**: он ссылается на этот (`../AGENTS.md`)
 > для общих workspace-правил и содержит только специфику именно своего подрепо.
@@ -24,15 +24,15 @@ webtransport-protobuf/                 ← git-репо (корень) + SUBMODU
 ├── AGENTS.md   # этот роутер + общие правила
 ├── .gitmodules # 5 подрепо как git-submodule (см. ниже)
 ├── .gitignore  # workspace-уровневые исключения (НЕ подрепо — они трекируются как gitlink)
-├── proto/      # [submodule #1] protobuf-контракты фронт↔бек (source of truth по типам)
+├── webtransport-protobuf-proto/      # [submodule #1] protobuf-контракты фронт↔бек (source of truth по типам)
 │   └── AGENTS.md
-├── web/        # [submodule #2] Angular-приложение
+├── webtransport-protobuf-angular-web/        # [submodule #2] Angular-приложение
 │   └── AGENTS.md
-├── server/     # [submodule #3] Node.js + TypeScript-бэкенд
+├── webtransport-protobuf-nodejs-server/     # [submodule #3] Node.js + TypeScript-бэкенд
 │   └── AGENTS.md
-├── certs/      # [submodule #4] TLS-сертификаты + генератор (dev-HTTPS/TLS 1.3)
+├── webtransport-protobuf-certs/      # [submodule #4] TLS-сертификаты + генератор (dev-HTTPS/TLS 1.3)
 │   └── AGENTS.md
-└── edge/       # [submodule #5] Go WebTransport-edge (H3/QUIC) — byte-relay → Node
+└── webtransport-protobuf-go-edge/       # [submodule #5] Go WebTransport-edge (H3/QUIC) — byte-relay → Node
 ```
 
 ### Куда смотреть по теме
@@ -40,29 +40,29 @@ webtransport-protobuf/                 ← git-репо (корень) + SUBMODU
 | Тема / запрос | Где искать |
 |---|---|
 | Структура workspace, общие правила workspace | **этот файл, §0–§7** |
-| Protobuf-контракты, синтаксис `.proto`, `buf lint`, версии, changelog | [proto/AGENTS.md](proto/AGENTS.md) |
-| Протокольные соглашения (фрейминг, datagram-потоки, handshake-auth, версия протока) | [proto/AGENTS.md](proto/AGENTS.md) + сам [proto/PROTOCOL.md](proto/PROTOCOL.md) |
-| Angular-приложение (frontend), Taiga UI v5, Signal Forms, компоненты, роутинг, UI | [web/AGENTS.md](web/AGENTS.md) |
-| WebTransport-клиент (адаптер, backpressure, reconnect, SEAM на фронте) | [web/AGENTS.md](web/AGENTS.md) |
-| Node-бэкенд (ESM, SEAM, бизнес-логика, transport-адаптер на бэке) | [server/AGENTS.md](server/AGENTS.md) |
-| WebTransport-edge (quic-go / Caddy с ALPN h3), решение по серверной стороне | [server/AGENTS.md](server/AGENTS.md) + [proto/PROTOCOL.md](proto/PROTOCOL.md) |
-| TLS/сертификаты, `make-certs.mjs`, CA/leaf, SAN, импорт CA в Windows | [certs/AGENTS.md](certs/AGENTS.md) |
-| Protobuf codegen (`buf generate`, `@bufbuild/protobuf`, `protoc-gen-es`) | [web/AGENTS.md](web/AGENTS.md) **и** [server/AGENTS.md](server/AGENTS.md) (каждый — свой `buf.gen.yaml` → свой `src/proto-generated/`) — плюс [proto/AGENTS.md](proto/AGENTS.md) для контрактов |
+| Protobuf-контракты, синтаксис `.proto`, `buf lint`, версии, changelog | [webtransport-protobuf-proto/AGENTS.md](webtransport-protobuf-proto/AGENTS.md) |
+| Протокольные соглашения (фрейминг, datagram-потоки, handshake-auth, версия протока) | [webtransport-protobuf-proto/AGENTS.md](webtransport-protobuf-proto/AGENTS.md) + сам [webtransport-protobuf-proto/PROTOCOL.md](webtransport-protobuf-proto/PROTOCOL.md) |
+| Angular-приложение (frontend), Taiga UI v5, Signal Forms, компоненты, роутинг, UI | [webtransport-protobuf-angular-web/AGENTS.md](webtransport-protobuf-angular-web/AGENTS.md) |
+| WebTransport-клиент (адаптер, backpressure, reconnect, SEAM на фронте) | [webtransport-protobuf-angular-web/AGENTS.md](webtransport-protobuf-angular-web/AGENTS.md) |
+| Node-бэкенд (ESM, SEAM, бизнес-логика, transport-адаптер на бэке) | [webtransport-protobuf-nodejs-server/AGENTS.md](webtransport-protobuf-nodejs-server/AGENTS.md) |
+| WebTransport-edge (quic-go / Caddy с ALPN h3), решение по серверной стороне | [webtransport-protobuf-nodejs-server/AGENTS.md](webtransport-protobuf-nodejs-server/AGENTS.md) + [webtransport-protobuf-proto/PROTOCOL.md](webtransport-protobuf-proto/PROTOCOL.md) |
+| TLS/сертификаты, `make-certs.mjs`, CA/leaf, SAN, импорт CA в Windows | [webtransport-protobuf-certs/AGENTS.md](webtransport-protobuf-certs/AGENTS.md) |
+| Protobuf codegen (`buf generate`, `@bufbuild/protobuf`, `protoc-gen-es`) | [webtransport-protobuf-angular-web/AGENTS.md](webtransport-protobuf-angular-web/AGENTS.md) **и** [webtransport-protobuf-nodejs-server/AGENTS.md](webtransport-protobuf-nodejs-server/AGENTS.md) (каждый — свой `buf.gen.yaml` → свой `src/proto-generated/`) — плюс [webtransport-protobuf-proto/AGENTS.md](webtransport-protobuf-proto/AGENTS.md) для контрактов |
 | Стек (§2), окружение хоста (§3), корпуса документации (§4), общие Guardrails (§5), DoD (§6), dev-правила + архитектура-плагинность (§7) | **этот файл, §2–§7** |
 
 ### Правила workspace
 
 - **Корневая папка — git-репо**, в нём отслеживаются workspace-уровневые файлы
   (`AGENTS.md`, `.gitignore`, `.gitmodules`, `README.md`, общие `scripts/`, CI-конфиги).
-- **Пять подрепо** (`proto/`, `web/`, `server/`, `certs/`, `edge/`) — **git-submodules**
+- **Пять подрепо** (`webtransport-protobuf-proto/`, `webtransport-protobuf-angular-web/`, `webtransport-protobuf-nodejs-server/`, `webtransport-protobuf-certs/`, `webtransport-protobuf-go-edge/`) — **git-submodules**
   (файл `.gitmodules` в корне). У каждого — собственный remote (github.com/KorolevOl),
   собственный ветвление `master`, собственный commit-поток.
 - **Прямых imports исходников одного подрепо в другой — НЕТ.** Единственная легитимная
-  связь — **контракт из `proto/`** (сгенерированный тип/структура). Подрепо не вложены
+  связь — **контракт из `webtransport-protobuf-proto/`** (сгенерированный тип/структура). Подрепо не вложены
   друг в друга.
-- **Порядок изменений**: изменился обмен → сначала `proto/` → `proto:gen` в `web/` и `server/`
-  → правки кода в `web/` и `server/`. **Никогда** не дублировать тип/структуру «вручную»
-  в `web/` или `server/` — контракт `proto/` — единственный источник.
+- **Порядок изменений**: изменился обмен → сначала `webtransport-protobuf-proto/` → `proto:gen` в `webtransport-protobuf-angular-web/` и `webtransport-protobuf-nodejs-server/`
+  → правки кода в `webtransport-protobuf-angular-web/` и `webtransport-protobuf-nodejs-server/`. **Никогда** не дублировать тип/структуру «вручную»
+  в `webtransport-protobuf-angular-web/` или `webtransport-protobuf-nodejs-server/` — контракт `webtransport-protobuf-proto/` — единственный источник.
 - **Корневой remote** = `github.com/KorolevOl/webtransport-protobuf`; подрепо имеют
   собственные remote (`github.com/KorolevOl/webtransport-protobuf-{proto,angular-web,nodejs-server,certs,go-edge}`).
 
@@ -70,7 +70,7 @@ webtransport-protobuf/                 ← git-репо (корень) + SUBMODU
 
 **Фронтенд на Angular** и **бэкенд на Node.js/TypeScript**, общающиеся по протоколу
 **WebTransport** (HTTP/3 / QUIC). Все сообщения, летящие между ними, сериализуются в
-**protobuf** по контрактам из `proto/`.
+**protobuf** по контрактам из `webtransport-protobuf-proto/`.
 
 Почему WebTransport (а не WebSocket):
 - **надёжные потоки (streams)** — упорядоченные, без head-of-line blocking (потоки QUIC
@@ -97,12 +97,12 @@ WebTransport — это **транспорт**: поточный / bidirectional
 | **Запрос-ответ** (аналог GET/POST; ждём response) | WebTransport | **надёжный bidirectional stream**: клиент пишет request → ждёт response в том же потоке; сервер обрабатывает → отвечает в том же потоке → закрывает |
 
 > **Нет** отдельного HTTP-канала для «обычного REST». Все бизнес-запросы/ответы —
-> **через WebTransport stream**, сериализованные protobuf по контрактам `proto/`.
+> **через WebTransport stream**, сериализованные protobuf по контрактам `webtransport-protobuf-proto/`.
 
 **Нетокен = редирект на логин.** Если клиент не имеет валидного токена:
 1. Запомнить текущий URL (запрос, на который был ответ 401/403, или текущая маршрутная
    строка) — в **`sessionStorage`** (не `localStorage`, не переживает закрытие вкладки).
-   Источник — один, правило реализации — в [web/AGENTS.md](web/AGENTS.md) «Токен и редирект».
+   Источник — один, правило реализации — в [webtransport-protobuf-angular-web/AGENTS.md](webtransport-protobuf-angular-web/AGENTS.md) «Токен и редирект».
 2. Перенаправить на страницу логина/авторизации (HTTP-форма).
 3. После успешной авторизации — **вернуться** на запомненный URL.
 
@@ -124,16 +124,16 @@ WebTransport — это **транспорт**: поточный / bidirectional
 > **НЕ** поднимать второй WebTransport рядом с первым (даже ради «отдельного канала
 > для событий»). Всё через один: streams — для запрос-ответ и надёжных событий,
 > datagrams — для fire-and-forget. Фрейминг многих сообщений в одном потоке — из
-> `proto/PROTOCOL.md`.
+> `webtransport-protobuf-proto/PROTOCOL.md`.
 
-> Реализация — в едином адаптере **SEAM** ([web/AGENTS.md](web/AGENTS.md)
+> Реализация — в едином адаптере **SEAM** ([webtransport-protobuf-angular-web/AGENTS.md](webtransport-protobuf-angular-web/AGENTS.md)
 > «WebTransport-клиент»: singleton + `connect`/`close`/`reconnect`, не дублировать в
-> компонентах) и в `server/` (один listener, не один на запрос). Подробности
-> idle-таймаута и reconnect-backoff — в `proto/PROTOCOL.md`.
+> компонентах) и в `webtransport-protobuf-nodejs-server/` (один listener, не один на запрос). Подробности
+> idle-таймаута и reconnect-backoff — в `webtransport-protobuf-proto/PROTOCOL.md`.
 
 > Детали (формат токена, где хранить, какой срок жизни, refresh-политика) — фиксируются
-> в `proto/PROTOCOL.md`. Правила реализации редиректа — в [web/AGENTS.md](web/AGENTS.md);
-> правила выдачи/проверки токена — в [server/AGENTS.md](server/AGENTS.md).
+> в `webtransport-protobuf-proto/PROTOCOL.md`. Правила реализации редиректа — в [webtransport-protobuf-angular-web/AGENTS.md](webtransport-protobuf-angular-web/AGENTS.md);
+> правила выдачи/проверки токена — в [webtransport-protobuf-nodejs-server/AGENTS.md](webtransport-protobuf-nodejs-server/AGENTS.md).
 
 ## 2. Зафиксированный стек (workspace-уровень)
 
@@ -144,7 +144,7 @@ WebTransport — это **транспорт**: поточный / bidirectional
 | Состояние | **signals** | `signal()`, `computed()`, `effect()` |
 | UI-кит | **Taiga UI v5** (`taiga-ui` + `@taiga-ui/cdk`) | secondary entry points, `@maskito/core`, CSS custom properties, **БЕЗ** `@angular/animations` |
 | TS (оба кода) | **strict** | **`no` `any`**; при неопределённости — `unknown` + сужение |
-| Сеть | **WebTransport** | браузер: Chromium API; сервер — см. [server/AGENTS.md](server/AGENTS.md) |
+| Сеть | **WebTransport** | браузер: Chromium API; сервер — см. [webtransport-protobuf-nodejs-server/AGENTS.md](webtransport-protobuf-nodejs-server/AGENTS.md) |
 | Protobuf runtime | **`@bufbuild/protobuf`** (protobuf-es) | единый runtime и в браузере, и в Node |
 | Protobuf codegen | **Buf v2 + `protoc-gen-es`** (`target=ts`) | **КАНОН**. НЕ `ts-proto`, НЕ `protobufjs` |
 | Бэкенд | **Node.js 24 + TypeScript** | ESM (`"type": "module"`), те же TS-правила что у фронте, адаптированные под Node |
@@ -166,7 +166,7 @@ WebTransport — это **транспорт**: поточный / bidirectional
 - **openssl** — из Git for Windows (git-bash, `/usr/bin/openssl`). Системный
   Windows-OpenSSL НЕ предполагать.
 - **Node v24 НЕ имеет нативного QUIC** (`node:quic` не грузится) — ограничение для
-  серверной стороны WebTransport (решение — в [server/AGENTS.md](server/AGENTS.md)).
+  серверной стороны WebTransport (решение — в [webtransport-protobuf-nodejs-server/AGENTS.md](webtransport-protobuf-nodejs-server/AGENTS.md)).
 - **Браузер для верификации**: **Яндекс Browser** (= Chromium) — **ПЕРВОЙ ОЧЕРЕДЬЮ**,
   не `chrome.exe`/`msedge.exe`. CDP `127.0.0.1:9222`, skill `browser-debug`,
   debug-профиль `browser-harness-profile`. Не `taskkill browser.exe` без фильтра.
@@ -196,51 +196,51 @@ WebTransport — это **транспорт**: поточный / bidirectional
   workspace-уровневые файлы; подрепо — **git-submodules** (`.gitmodules`).
 - ❌ Не дёргать `git submodule deinit` / `remove` «на всякий случай» — это сломает
   рабочую папку подрепо. Обновление — `git submodule update --remote`.
-- ❌ Не импортировать исходники `web/` из `server/` (или наоборот). Единственная связь —
-  `proto/`.
-- ❌ Не дублировать контракт (тип/структуру сообщения): источник — `proto/`, артефакт —
-  сгенерированный код в `web/` или `server/`.
+- ❌ Не импортировать исходники `webtransport-protobuf-angular-web/` из `webtransport-protobuf-nodejs-server/` (или наоборот). Единственная связь —
+  `webtransport-protobuf-proto/`.
+- ❌ Не дублировать контракт (тип/структуру сообщения): источник — `webtransport-protobuf-proto/`, артефакт —
+  сгенерированный код в `webtransport-protobuf-angular-web/` или `webtransport-protobuf-nodejs-server/`.
 - ❌ Не генерить protobuf через `ts-proto`/`protobufjs` — только **`buf` + `protoc-gen-es`**.
-- ❌ Не редактировать `src/proto-generated/` (в `web/` или `server/`) — чинить через
+- ❌ Не редактировать `src/proto-generated/` (в `webtransport-protobuf-angular-web/` или `webtransport-protobuf-nodejs-server/`) — чинить через
   `.proto` → `npm run proto:gen`.
 - ❌ Не писать `any`. В Angular — не писать `standalone: true`/`OnPush` явно. Не тащить
   `@angular/animations`.
 - ❌ Не размазывать транспортные детали по компонентам/фичам — только через SEAM
-  (адаптер = единственный носитель детали). Правила SEAM — в [web/AGENTS.md](web/AGENTS.md) /
-  [server/AGENTS.md](server/AGENTS.md).
+  (адаптер = единственный носитель детали). Правила SEAM — в [webtransport-protobuf-angular-web/AGENTS.md](webtransport-protobuf-angular-web/AGENTS.md) /
+  [webtransport-protobuf-nodejs-server/AGENTS.md](webtransport-protobuf-nodejs-server/AGENTS.md).
 - ❌ Не монолитить: каждый компонент — **самостоятельный плагин** (подключается /
   заменяется / отключается). Канон — §7 «Архитектура: плагинная модульность».
-- ❌ Не поднимать WebTransport-сервер на чистом Node (нет QUIC) — см. [server/AGENTS.md](server/AGENTS.md).
+- ❌ Не поднимать WebTransport-сервер на чистом Node (нет QUIC) — см. [webtransport-protobuf-nodejs-server/AGENTS.md](webtransport-protobuf-nodejs-server/AGENTS.md).
 - ❌ Не брать `chrome.exe`/`msedge.exe` для верификации; **Яндекс Browser** первичен.
 - ❌ Scratch — не в `%TEMP%`/`/tmp`; **`T:`**.
-- ❌ Dev-сертификаты (`certs/`) — не для прода, не под реальные домены, наружу не выставлять.
+- ❌ Dev-сертификаты (`webtransport-protobuf-certs/`) — не для прода, не под реальные домены, наружу не выставлять.
 - ⚠️ Login/credentials/payments — стоп и вопрос пользователю; не угадывать секреты.
 
 ## 6. Общие Definition of Done (workspace-уровень)
 
-- [ ] Пять подрепо на месте: `proto/`, `web/`, `server/`, `certs/`, `edge/` — каждый
+- [ ] Пять подрепо на месте: `webtransport-protobuf-proto/`, `webtransport-protobuf-angular-web/`, `webtransport-protobuf-nodejs-server/`, `webtransport-protobuf-certs/`, `webtransport-protobuf-go-edge/` — каждый
       git-submodule (записан в `.gitmodules`), с собственным git-репо.
 - [ ] Корневой репо инициализирован; `.gitmodules` ссылается на 5 подрепо;
       `git submodule update --init` восстанавливает рабочую папку.
 - [ ] В каждом подрепо — свой `AGENTS.md` со специфичными правилами (см. роутинг, §0).
-- [ ] Контракт → Реализация → Потребитель (SEAM) в `web/` и `server/`; адаптер заменяем.
+- [ ] Контракт → Реализация → Потребитель (SEAM) в `webtransport-protobuf-angular-web/` и `webtransport-protobuf-nodejs-server/`; адаптер заменяем.
 - [ ] Плагинная модульность (§7): каждый компонент — самостоятельный плагин (подключается /
   заменяется / отключается); ни одно правило выше не нарушает это — DI/реестр, не моноклассы.
-- [ ] `.proto` в `proto/` → `npm run proto:gen` в `web/` и `server/` → `src/proto-generated/`
+- [ ] `.proto` в `webtransport-protobuf-proto/` → `npm run proto:gen` в `webtransport-protobuf-angular-web/` и `webtransport-protobuf-nodejs-server/` → `src/proto-generated/`
   синхронизирован, баррел перегенерирован.
-- [ ] Фрейминг и транспортные правила зафиксированы в `proto/PROTOCOL.md`; реализованы
+- [ ] Фрейминг и транспортные правила зафиксированы в `webtransport-protobuf-proto/PROTOCOL.md`; реализованы
   симметрично в обоих адаптерах.
 - [ ] Решения по стек/пайплайн/транспорт записаны в Mnemosyne (compact fact), не только в чате.
 
 > Per-репо Definition of Done — в каждом подрепо:
-> [proto/AGENTS.md](proto/AGENTS.md) · [web/AGENTS.md](web/AGENTS.md) · [server/AGENTS.md](server/AGENTS.md) · [certs/AGENTS.md](certs/AGENTS.md)
+> [webtransport-protobuf-proto/AGENTS.md](webtransport-protobuf-proto/AGENTS.md) · [webtransport-protobuf-angular-web/AGENTS.md](webtransport-protobuf-angular-web/AGENTS.md) · [webtransport-protobuf-nodejs-server/AGENTS.md](webtransport-protobuf-nodejs-server/AGENTS.md) · [webtransport-protobuf-certs/AGENTS.md](webtransport-protobuf-certs/AGENTS.md)
 > (раздел «Definition of Done»).
 
-## 7. Общие правила разработки (применяются к `web/` и `server/`)
+## 7. Общие правила разработки (применяются к `webtransport-protobuf-angular-web/` и `webtransport-protobuf-nodejs-server/`)
 
 > **Единый источник для общих dev-правил — этот раздел.** Подрепо не повторяют его,
 > а ссылаются (`корневой §7`) и содержат только то, что специфично именно для них.
-> Это устраняет дублирование между [web/AGENTS.md](web/AGENTS.md) и [server/AGENTS.md](server/AGENTS.md).
+> Это устраняет дублирование между [webtransport-protobuf-angular-web/AGENTS.md](webtransport-protobuf-angular-web/AGENTS.md) и [webtransport-protobuf-nodejs-server/AGENTS.md](webtransport-protobuf-nodejs-server/AGENTS.md).
 
 ### Архитектура: плагинная модульность (оба кода)
 Вся программа строится **как набор самостоятельных плагинов**: каждый компонент
@@ -262,9 +262,9 @@ WebTransport — это **транспорт**: поточный / bidirectional
   одного плагина меняется без остановки всего приложения.
 
 Механика (кандидат, детализируется при реализации):
-- `web/` — DI Angular (providers + injectables) + реестр фич: подключаешь/отключаешь
+- `webtransport-protobuf-angular-web/` — DI Angular (providers + injectables) + реестр фич: подключаешь/отключаешь
   фичу в provider-списке; адаптер транспорта — сам такой плагин (SEAM).
-- `server/` — DI (ручной сбор или контейнер, напр. `tsyringe`) + реестр use-case'ов /
+- `webtransport-protobuf-nodejs-server/` — DI (ручной сбор или контейнер, напр. `tsyringe`) + реестр use-case'ов /
   обработчиков: подключение = запись в реестр, отключение = снятие записи; адаптер — плагин (SEAM).
 
 > Не противоречит §1 (singleton WebTransport): **транспорт** остаётся один,
@@ -299,5 +299,5 @@ WebTransport — это **транспорт**: поточный / bidirectional
 - **ОДИН logger-фасад**; все логи — только через него.
 - Лог **обязателен** на: вход/выход функций, ветвления решений, внеш. операции (сеть/диск/
   subprocess), обработку ошибок, переходы состояний.
-- Конкретная библиотека — за подрепо (`web/`: candidate `@taiga-ui/kit-logging` или свой слой;
-  `server/`: candidate `pino`).
+- Конкретная библиотека — за подрепо (`webtransport-protobuf-angular-web/`: candidate `@taiga-ui/kit-logging` или свой слой;
+  `webtransport-protobuf-nodejs-server/`: candidate `pino`).
