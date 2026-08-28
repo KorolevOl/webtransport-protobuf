@@ -1,15 +1,15 @@
 # webtransport-protobuf (root)
 
 Корневой reпо хранит **workspace-уровневые** файлы: `AGENTS.md` (роутер),
-`.gitignore` и `.gitmodules`. Контентные подрепо живут как **submodule**:
+`.gitignore` и `.gitmodules`. Пять контентных подрепо — **git-submodule'ы**;
+имена папок совпадают с именами репо (список — в `.gitmodules`).
 
-| Path    | Репо (github.com/KorolevOl)                      |
-|---------|--------------------------------------------------|
-| webtransport-protobuf-proto/  | webtransport-protobuf-proto                      |
-| webtransport-protobuf-angular-web/    | webtransport-protobuf-angular-web                |
-| webtransport-protobuf-nodejs-server/ | webtransport-protobuf-nodejs-server              |
-| webtransport-protobuf-certs/  | webtransport-protobuf-certs                      |
-| webtransport-protobuf-go-edge/   | webtransport-protobuf-go-edge                    |
+**Папки подрепо** (все `github.com/KorolevOl/...`, ветка `master`):
+- `webtransport-protobuf-proto` — protobuf-контракты
+- `webtransport-protobuf-angular-web` — фронт на Angular 22
+- `webtransport-protobuf-nodejs-server` — бек на Node.js 24
+- `webtransport-protobuf-certs` — dev-TLS (CA + leaf)
+- `webtransport-protobuf-go-edge` — WebTransport-edge (H3/QUIC, Go)
 
 ## Как использовать
 
