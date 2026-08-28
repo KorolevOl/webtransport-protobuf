@@ -1,20 +1,20 @@
 [submodule "proto"]
-	path = proto
+	path = webtransport-protobuf-proto
 	url = https://github.com/KorolevOl/webtransport-protobuf-proto
 	branch = master
 [submodule "web"]
-	path = web
+	path = webtransport-protobuf-angular-web
 	url = https://github.com/KorolevOl/webtransport-protobuf-angular-web
 	branch = master
 [submodule "server"]
 	url = https://github.com/KorolevOl/webtransport-protobuf-nodejs-server
-	path = server
+	path = webtransport-protobuf-nodejs-server
 	branch = master
 [submodule "certs"]
 	url = https://github.com/KorolevOl/webtransport-protobuf-certs
-	path = certs
+	path = webtransport-protobuf-certs
 	branch = master
 [submodule "edge"]
 	url = https://github.com/KorolevOl/webtransport-protobuf-go-edge
 	branch = master
-	path = edge
+	path = webtransport-protobuf-go-edge
