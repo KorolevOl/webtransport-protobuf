@@ -20,17 +20,19 @@
 ## 0. Структура workspace и роутинг по AGENTS.md
 
 ```
-angular-webtransport-proto-workspace/   ← git-репо (корень)
+angular-webtransport/                  ← git-репо (корень) + SUBMODULES
 ├── AGENTS.md   # этот роутер + общие правила
-├── .gitignore  # исключает 4 подрепо из корневого repo
-├── proto/      # [подрепо #1] protobuf-контракты фронт↔бек (source of truth по типам)
+├── .gitmodules # 5 подрепо как git-submodule (см. ниже)
+├── .gitignore  # workspace-уровневые исключения (НЕ подрепо — они трекируются как gitlink)
+├── proto/      # [submodule #1] protobuf-контракты фронт↔бек (source of truth по типам)
 │   └── AGENTS.md
-├── web/        # [подрепо #2] Angular-приложение
+├── web/        # [submodule #2] Angular-приложение
 │   └── AGENTS.md
-├── server/     # [подрепо #3] Node.js + TypeScript-бэкенд
+├── server/     # [submodule #3] Node.js + TypeScript-бэкенд
 │   └── AGENTS.md
-└── certs/      # [подрепо #4] TLS-сертификаты + генератор (dev-HTTPS/TLS 1.3)
-    └── AGENTS.md
+├── certs/      # [submodule #4] TLS-сертификаты + генератор (dev-HTTPS/TLS 1.3)
+│   └── AGENTS.md
+└── edge/       # [submodule #5] Go WebTransport-edge (H3/QUIC) — byte-relay → Node
 ```
 
 ### Куда смотреть по теме
@@ -50,20 +52,19 @@ angular-webtransport-proto-workspace/   ← git-репо (корень)
 
 ### Правила workspace
 
-- **Корневая папка — git-репо**, но в нём отслеживаются **только корневые файлы**
-  (`AGENTS.md`, `.gitignore`, и — по мере накопления — другие workspace-уровневые:
-  общие `scripts/`, CI-конфиги, workspace-`README.md`).
-- **Четыре подрепо** (`proto/`, `web/`, `server/`, `certs/`) **исключены из корневого repo**
-  через `.gitignore` (записи `/proto/`, `/web/`, `/server/`, `/certs/`). Каждое —
-  собственный автономный git-репозиторий со своей историей и своим `.git/`.
+- **Корневая папка — git-репо**, в нём отслеживаются workspace-уровневые файлы
+  (`AGENTS.md`, `.gitignore`, `.gitmodules`, `README.md`, общие `scripts/`, CI-конфиги).
+- **Пять подрепо** (`proto/`, `web/`, `server/`, `certs/`, `edge/`) — **git-submodules**
+  (файл `.gitmodules` в корне). У каждого — собственный remote (github.com/KorolevOl),
+  собственный ветвление `master`, собственный commit-поток.
 - **Прямых imports исходников одного подрепо в другой — НЕТ.** Единственная легитимная
   связь — **контракт из `proto/`** (сгенерированный тип/структура). Подрепо не вложены
   друг в друга.
 - **Порядок изменений**: изменился обмен → сначала `proto/` → `proto:gen` в `web/` и `server/`
   → правки кода в `web/` и `server/`. **Никогда** не дублировать тип/структуру «вручную»
   в `web/` или `server/` — контракт `proto/` — единственный источник.
-- **Корневой remote** может быть другим или отсутствовать; подрепо имеют собственные
-  remote. Корневой хранит только workspace-уровневую документацию/скрипты.
+- **Корневой remote** = `github.com/KorolevOl/angular-webtransport`; подрепо имеют
+  собственные remote (`github.com/KorolevOl/angular-webtransport-{proto,web,server,certs,edge}`).
 
 ## 1. Цель проекта
 
@@ -191,8 +192,10 @@ WebTransport — это **транспорт**: поточный / bidirectional
 
 ## 5. Общие Guardrails (workspace-уровень)
 
-- ❌ Не смешивать четыре подрепо: не вложенные, не «общий git». Корневой репо — только
-  workspace-уровневые файлы; подрепо исключены через `.gitignore`.
+- ❌ Не смешивать пять подрепо: не вложенные, не «общий git». Корневой репо — только
+  workspace-уровневые файлы; подрепо — **git-submodules** (`.gitmodules`).
+- ❌ Не дёргать `git submodule deinit` / `remove` «на всякий случай» — это сломает
+  рабочую папку подрепо. Обновление — `git submodule update --remote`.
 - ❌ Не импортировать исходники `web/` из `server/` (или наоборот). Единственная связь —
   `proto/`.
 - ❌ Не дублировать контракт (тип/структуру сообщения): источник — `proto/`, артефакт —
@@ -215,8 +218,10 @@ WebTransport — это **транспорт**: поточный / bidirectional
 
 ## 6. Общие Definition of Done (workspace-уровень)
 
-- [ ] Четыре подрепо на месте: `proto/`, `web/`, `server/`, `certs/` — каждый автономный git-репо.
-- [ ] Корневой репо инициализирован; `.gitignore` исключает 4 подрепо из корневого repo.
+- [ ] Пять подрепо на месте: `proto/`, `web/`, `server/`, `certs/`, `edge/` — каждый
+      git-submodule (записан в `.gitmodules`), с собственным git-репо.
+- [ ] Корневой репо инициализирован; `.gitmodules` ссылается на 5 подрепо;
+      `git submodule update --init` восстанавливает рабочую папку.
 - [ ] В каждом подрепо — свой `AGENTS.md` со специфичными правилами (см. роутинг, §0).
 - [ ] Контракт → Реализация → Потребитель (SEAM) в `web/` и `server/`; адаптер заменяем.
 - [ ] Плагинная модульность (§7): каждый компонент — самостоятельный плагин (подключается /
