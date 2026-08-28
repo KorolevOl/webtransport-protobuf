@@ -160,7 +160,7 @@ echo ================================================================
 echo.
 start "" "%~dp0start-edge.bat"
 echo started edge
-timeout /t 2 /nobreak >nul
+call timeout.com /t 2 /nobreak >nul
 start "" "%~dp0start-server.bat"
 echo started server
 start "" "%~dp0start-web.bat"
