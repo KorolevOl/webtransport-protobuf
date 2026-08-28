@@ -1,4 +1,4 @@
-# AGENTS.md — angular-webtransport-proto-workspace (корневой роутер)
+# AGENTS.md — webtransport-protobuf (корневой роутер)
 
 > **Этот файл — точка входа для ИИ-агента.** Он описывает workspace как целое
 > и указывает, в каком `AGENTS.md` подрепо искать специфичные правила по той или
@@ -20,7 +20,7 @@
 ## 0. Структура workspace и роутинг по AGENTS.md
 
 ```
-angular-webtransport/                  ← git-репо (корень) + SUBMODULES
+webtransport-protobuf/                 ← git-репо (корень) + SUBMODULES
 ├── AGENTS.md   # этот роутер + общие правила
 ├── .gitmodules # 5 подрепо как git-submodule (см. ниже)
 ├── .gitignore  # workspace-уровневые исключения (НЕ подрепо — они трекируются как gitlink)
@@ -63,8 +63,8 @@ angular-webtransport/                  ← git-репо (корень) + SUBMODU
 - **Порядок изменений**: изменился обмен → сначала `proto/` → `proto:gen` в `web/` и `server/`
   → правки кода в `web/` и `server/`. **Никогда** не дублировать тип/структуру «вручную»
   в `web/` или `server/` — контракт `proto/` — единственный источник.
-- **Корневой remote** = `github.com/KorolevOl/angular-webtransport`; подрепо имеют
-  собственные remote (`github.com/KorolevOl/angular-webtransport-{proto,web,server,certs,edge}`).
+- **Корневой remote** = `github.com/KorolevOl/webtransport-protobuf`; подрепо имеют
+  собственные remote (`github.com/KorolevOl/webtransport-protobuf-{proto,angular-web,nodejs-server,certs,go-edge}`).
 
 ## 1. Цель проекта
 
