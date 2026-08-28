@@ -241,6 +241,13 @@ Auth-домен = `webtransport-protobuf-proto/auth/v1/auth.proto`. Четыре
 
 ## Часть 4. Полезные команды
 
+> **Примечание про `ng serve` в первый запуск.** Angular CLI один раз при первом
+> запуске предложит «Would you like to enable autocompletion? (Y/n)» и **будет
+> ждать**. Это нормально — просто нажми `N` (или `Y`, если хочешь автокомплит для
+> bash/zsh; в `cmd` он не сработает). Чтобы не ловить этот промпт в фоновом окне /
+> CI: `set NG_FORCE_AUTOCOMPLETE=false && npm start`. `start-web.bat` уже
+> закрывает этот вопрос.
+
 | Что | Команда |
 |---|---|
 | Только перезапустить edge | `start-edge.bat` |

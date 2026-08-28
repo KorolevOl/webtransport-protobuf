@@ -25,30 +25,30 @@ echo ================================================================
 echo.
 
 rem ---------- 1. toolchain ----------
-where git >nul 2^>nul
+where git >nul 2>nul
 if errorlevel 1 (
-    echo [toolchain] MISSING: git  (Windows + Git / git-bash)
+    echo [toolchain] MISSING: git  - need Git for Windows
     pause
     exit /b 1
 )
 echo [toolchain] git   OK
-where node >nul 2^>nul
+where node >nul 2>nul
 if errorlevel 1 (
-    echo [toolchain] MISSING: node  (Node.js 24)
+    echo [toolchain] MISSING: node  - need Node.js 24
     pause
     exit /b 1
 )
 echo [toolchain] node  OK
-where npm >nul 2^>nul
+where npm >nul 2>nul
 if errorlevel 1 (
-    echo [toolchain] MISSING: npm  (npm 11)
+    echo [toolchain] MISSING: npm  - need npm 11
     pause
     exit /b 1
 )
 echo [toolchain] npm   OK
-where go >nul 2^>nul
+where go >nul 2>nul
 if errorlevel 1 (
-    echo [toolchain] MISSING: go  (Go 1.26 or newer)
+    echo [toolchain] MISSING: go  - need Go 1.26 or newer
     pause
     exit /b 1
 )
@@ -145,7 +145,7 @@ echo [deps] all deps ready.
 rem ---------- 4. cert sanity ----------
 echo.
 echo [certs] leaf-short expiry (Chromium WebTransport pinning requires lifetime b. ~14 days):
-openssl x509 -in webtransport-protobuf-certs\leaf-short\leaf.pem -noout -enddate 2^>nul
+openssl x509 -in webtransport-protobuf-certs\leaf-short\leaf.pem -noout -enddate 2>nul
 echo        If expired: regenerate via webtransport-protobuf-certs and update
 echo        LEAF_SHORT_SHA256_HEX in webtransport-protobuf-angular-web/src/app/app.config.ts.
 
