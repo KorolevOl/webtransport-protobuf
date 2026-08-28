@@ -55,31 +55,32 @@ if errorlevel 1 (
 echo [toolchain] go    OK
 
 rem ---------- 2. submodules ----------
+rem Plain `git clone` (without --recurse-submodules) creates EMPTY submodule dirs
+rem (the folder exists, but no .git and no files inside) - 'if not exist "dir"'
+rem misses this. So we ALWAYS run 'git submodule update --init --recursive'
+rem (idempotent: no-op if already checked out) and then verify a marker FILE
+rem per subrepo (only present in a real checkout).
 echo.
-rem Detect whether submodules are already checked out.
-set "MISSING="
-for %%d in (webtransport-protobuf-proto webtransport-protobuf-angular-web webtransport-protobuf-nodejs-server webtransport-protobuf-certs webtransport-protobuf-go-edge) do (
-    if not exist "%%d" set "MISSING=1"
-)
-if defined MISSING (
-    echo [submodules] not all 5 present, running: git submodule update --init --recursive
-    git submodule update --init --recursive
-    if errorlevel 1 (
-        echo [submodules] FAILED. Check .gitmodules and network access to github.com.
-        pause
-        exit /b 1
-    )
+echo [submodules] ensuring checked out (idempotent): git submodule update --init --recursive
+git submodule update --init --recursive
+if errorlevel 1 (
+    echo [submodules] FAILED. Check .gitmodules and network access to github.com.
+    echo [submodules] hint: git submodule status
+    pause
+    exit /b 1
 )
 
-rem Re-verify all 5 subdirs exist after the update attempt.
-set "MISSING2="
-for %%d in (webtransport-protobuf-proto webtransport-protobuf-angular-web webtransport-protobuf-nodejs-server webtransport-protobuf-certs webtransport-protobuf-go-edge) do (
-    if not exist "%%d" (
-        set "MISSING2=1"
-        echo [submodules] STILL MISSING after update: %%d
-    )
-)
-if defined MISSING2 (
+rem Re-verify all 5 subrepos have a real file (marker), not an empty dir.
+set "MISSING="
+if not exist "webtransport-protobuf-proto\buf.yaml"                 ( set "MISSING=%MISSING%webtransport-protobuf-proto " )
+if not exist "webtransport-protobuf-angular-web\package.json"       ( set "MISSING=%MISSING%webtransport-protobuf-angular-web " )
+if not exist "webtransport-protobuf-nodejs-server\package.json"     ( set "MISSING=%MISSING%webtransport-protobuf-nodejs-server " )
+if not exist "webtransport-protobuf-certs\make-certs.mjs"           ( set "MISSING=%MISSING%webtransport-protobuf-certs " )
+if not exist "webtransport-protobuf-go-edge\go.mod"                 ( set "MISSING=%MISSING%webtransport-protobuf-go-edge " )
+if defined MISSING (
+    echo [submodules] STILL MISSING markers for:  %MISSING%
+    echo [submodules] try manually: git submodule update --init --recursive
+    echo [submodules] and then:       git submodule status
     pause
     exit /b 1
 )
